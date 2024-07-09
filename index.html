@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lion Clicker Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffd700;
+        }
+        .game-container {
+            text-align: center;
+            background-color: #fff8dc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        #clickButton {
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        #clickButton:active {
+            transform: scale(0.95);
+        }
+        #score {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #8b4513;
+        }
+        #upgradeButton {
+            font-size: 14px;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #8b4513;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Lion Clicker</h1>
+        <div id="score">Lions: 0</div>
+        <button id="clickButton">
+            <img src="telcl.png" alt="Lion" width="200" height="200">
+        </button>
+        <br>
+        <button id="upgradeButton">Upgrade Lion Power (Cost: 10)</button>
+    </div>
+
+    <script>
+        let lions = 0;
+        let clickValue = 1;
+        let upgradeCost = 10;
+
+        const scoreElement = document.getElementById('score');
+        const clickButton = document.getElementById('clickButton');
+        const upgradeButton = document.getElementById('upgradeButton');
+
+        clickButton.addEventListener('click', () => {
+            lions += clickValue;
+            updateScore();
+        });
+
+        upgradeButton.addEventListener('click', () => {
+            if (lions >= upgradeCost) {
+                lions -= upgradeCost;
+                clickValue++;
+                upgradeCost = Math.floor(upgradeCost * 1.5);
+                updateScore();
+                upgradeButton.textContent = `Upgrade Lion Power (Cost: ${upgradeCost})`;
+            }
+        });
+
+        function updateScore() {
+            scoreElement.textContent = `Lions: ${lions}`;
+        }
+    </script>
+</body>
+</html>
