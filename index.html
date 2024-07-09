@@ -55,7 +55,7 @@
         <h1>Lion Clicker</h1>
         <div id="score">Lions: 0</div>
         <button id="clickButton">
-            <img src="telcl.png" alt="Lion" width="200" height="200">
+            <img src="lion.png" alt="Lion" width="200" height="200">
         </button>
         <br>
         <button id="upgradeButton">Upgrade Lion Power (Cost: 10)</button>
@@ -70,9 +70,33 @@
         const clickButton = document.getElementById('clickButton');
         const upgradeButton = document.getElementById('upgradeButton');
 
+        // Load game state from local storage
+        function loadGame() {
+            const savedState = localStorage.getItem('lionClickerState');
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                lions = state.lions;
+                clickValue = state.clickValue;
+                upgradeCost = state.upgradeCost;
+                updateScore();
+                updateUpgradeButton();
+            }
+        }
+
+        // Save game state to local storage
+        function saveGame() {
+            const state = {
+                lions: lions,
+                clickValue: clickValue,
+                upgradeCost: upgradeCost
+            };
+            localStorage.setItem('lionClickerState', JSON.stringify(state));
+        }
+
         clickButton.addEventListener('click', () => {
             lions += clickValue;
             updateScore();
+            saveGame();
         });
 
         upgradeButton.addEventListener('click', () => {
@@ -81,13 +105,22 @@
                 clickValue++;
                 upgradeCost = Math.floor(upgradeCost * 1.5);
                 updateScore();
-                upgradeButton.textContent = `Upgrade Lion Power (Cost: ${upgradeCost})`;
+                updateUpgradeButton();
+                saveGame();
             }
         });
 
         function updateScore() {
             scoreElement.textContent = `Lions: ${lions}`;
         }
+
+        function updateUpgradeButton() {
+            upgradeButton.textContent = `Upgrade Lion Power (Cost: ${upgradeCost})`;
+        }
+
+        // Load the game state when the page loads
+        loadGame();
     </script>
 </body>
 </html>
+
